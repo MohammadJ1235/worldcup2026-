@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>توقعات كأس العالم 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;background:#f0f2f5;min-height:100vh;padding:0}
+.header{background:linear-gradient(135deg,#1a3a6b 0%,#0d5c2e 100%);color:white;padding:2rem 1.5rem;text-align:center}
+.header h1{font-size:26px;font-weight:700;margin-bottom:6px}
+.header p{font-size:14px;opacity:0.85}
+.progress-bar{background:#e0e0e0;height:6px;border-radius:3px;margin:1.5rem 0 0}
+.progress-fill{height:100%;background:#27ae60;border-radius:3px;transition:width 0.4s}
+.container{max-width:780px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.card{background:white;border-radius:12px;padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.card-title{font-size:16px;font-weight:600;color:#1a3a6b;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-title .icon{font-size:18px}
+.card-desc{font-size:13px;color:#666;margin-bottom:1rem}
+input[type=text],input[type=number]{width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;direction:rtl;transition:border-color 0.2s}
+input[type=text]:focus,input[type=number]:focus{outline:none;border-color:#1a3a6b}
+select{width:100%;padding:10px 14px;border:1.5px solid #ddd;border-radius:8px;font-size:14px;font-family:inherit;direction:rtl;background:white;cursor:pointer}
+select:focus{outline:none;border-color:#1a3a6b}
+label{display:block;font-size:13px;color:#444;margin-bottom:5px;font-weight:500}
+.form-row{margin-bottom:1rem}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* Teams selector */
+.teams-counter{display:inline-flex;align-items:center;gap:8px;background:#eef7f0;border:1.5px solid #27ae60;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;color:#0d5c2e;margin-bottom:1rem}
+.teams-counter.warning{background:#fff3e0;border-color:#f39c12;color:#e67e22}
+.teams-counter.error{background:#fdecea;border-color:#e74c3c;color:#c0392b}
+.teams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px}
+.team-btn{padding:8px 10px;font-size:13px;border:1.5px solid #ddd;border-radius:8px;background:white;color:#333;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;line-height:1.3}
+.team-btn:hover{border-color:#1a3a6b;color:#1a3a6b;background:#f0f4ff}
+.team-btn.sel{background:#1a3a6b;border-color:#1a3a6b;color:white;font-weight:600}
+
+/* Matches */
+.match-card{background:#fafafa;border:1.5px solid #eee;border-radius:10px;padding:1rem;margin-bottom:10px}
+.match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.match-num{font-size:11px;color:#999;font-weight:600}
+.match-date{font-size:11px;color:#999}
+.match-teams{display:grid;grid-template-columns:1fr 40px 1fr;gap:8px;align-items:center;margin-bottom:10px}
+.match-team{text-align:center;font-size:13px;font-weight:600;color:#1a3a6b}
+.match-vs{text-align:center;font-size:12px;color:#aaa;font-weight:700}
+.match-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.match-inputs input[type=number]{text-align:center;padding:8px 6px;font-size:15px;font-weight:700}
+.match-winner{margin-top:8px}
+.match-winner select{font-size:13px;padding:7px 10px}
+.match-player{margin-top:6px}
+.match-player input{font-size:13px;padding:7px 10px}
+.group-title{font-size:15px;font-weight:700;color:#1a3a6b;padding:10px 0 6px;border-bottom:2px solid #1a3a6b;margin-bottom:10px}
+
+/* Nav buttons */
+.nav-btns{display:flex;gap:10px;margin-top:1.5rem}
+.btn{flex:1;padding:12px;font-size:15px;font-weight:600;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.btn-next{background:#1a3a6b;color:white}
+.btn-next:hover{background:#0d2a50}
+.btn-back{background:#eee;color:#555}
+.btn-back:hover{background:#ddd}
+.btn-submit{background:#27ae60;color:white}
+.btn-submit:hover{background:#1e8449}
+
+/* Steps */
+.steps{display:flex;gap:0;margin-bottom:1.5rem}
+.step{flex:1;text-align:center;position:relative}
+.step-circle{width:32px;height:32px;border-radius:50%;background:#ddd;color:#999;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 4px}
+.step.active .step-circle{background:#1a3a6b;color:white}
+.step.done .step-circle{background:#27ae60;color:white}
+.step-label{font-size:11px;color:#999}
+.step.active .step-label{color:#1a3a6b;font-weight:600}
+.step.done .step-label{color:#27ae60}
+.step-line{position:absolute;top:16px;left:-50%;right:50%;height:2px;background:#ddd;z-index:0}
+.step.done .step-line{background:#27ae60}
+.step:first-child .step-line{display:none}
+
+/* Success */
+.success{text-align:center;padding:2rem}
+.success h2{font-size:22px;font-weight:700;color:#27ae60;margin-bottom:8px}
+.success p{color:#555;margin-bottom:1.5rem}
+.copy-area{background:#f5f5f5;border-radius:10px;padding:1rem;text-align:right;font-size:12px;color:#333;white-space:pre-wrap;max-height:300px;overflow-y:auto;direction:ltr;line-height:1.6;margin-bottom:1rem}
+.copy-btn{background:#1a3a6b;color:white;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin:4px}
+.new-btn{background:#27ae60;color:white;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin:4px}
+.hint{font-size:12px;color:#888;margin-top:6px}
+
+@media(max-width:550px){
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .teams-grid{grid-template-columns:repeat(3,1fr)}
+  .match-inputs{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚽ توقعات كأس العالم 2026</h1>
+  <p>أمريكا · كندا · المكسيك | يونيو - يوليو 2026</p>
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+</div>
+
+<div class="container">
+
+<!-- Steps indicator -->
+<div class="steps" id="steps-bar">
+  <div class="step active" id="st1"><div class="step-circle">1</div><div class="step-label">البيانات</div></div>
+  <div class="step" id="st2"><div class="step-line"></div><div class="step-circle">2</div><div class="step-label">المتأهلون</div></div>
+  <div class="step" id="st3"><div class="step-line"></div><div class="step-circle">3</div><div class="step-label">المباريات</div></div>
+  <div class="step" id="st4"><div class="step-line"></div><div class="step-circle">4</div><div class="step-label">الجوائز</div></div>
+</div>
+
+<!-- PAGE 1: Name -->
+<div id="page1">
+  <div class="card">
+    <div class="card-title"><span class="icon">👤</span> معلوماتك</div>
+    <div class="card-desc">أدخل اسمك كما تريده يظهر في لوحة الترتيب</div>
+    <div class="form-row">
+      <label>الاسم الكامل *</label>
+      <input type="text" id="name" placeholder="أدخل اسمك..." />
+    </div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-next" onclick="goTo(2)">التالي: اختر المتأهلين ←</button>
+  </div>
+</div>
+
+<!-- PAGE 2: Teams -->
+<div id="page2" style="display:none">
+  <div class="card">
+    <div class="card-title"><span class="icon">🏆</span> المتأهلون لدور الـ32</div>
+    <div class="card-desc">اختر بالضبط 32 منتخباً تتوقع تأهلهم من دور المجموعات</div>
+    <div class="teams-counter" id="teams-counter">0 / 32 محدد</div>
+    <div class="teams-grid" id="teams-grid"></div>
+  </div>
+  <div class="nav-btns">
+    <button class="btn btn-back" onclick="goTo(1)">← رجوع</button>
+    <button class="btn btn-next" onclick="goTo(3)">التالي: توقع المباريات ←</button>
+  </div>
+</div>
+
+<!-- PAGE 3: Matches -->
+<div id="page3" style="display:none">
+  <div class="card">
+    <div class="card-title"><span class="icon">⚽</span> توقعات المباريات — دور المجموعات (72 مباراة)</div>
+    <div class="card-desc">لكل مباراة: توقع النتيجة بالأهداف، الفائز، وأفضل لاعب (اختياري)</div>
+  </div>
+  <div id="matches-container"></div>
+  <div class="nav-btns">
+    <button class="btn btn-back" onclick="goTo(2)">← رجوع</button>
+    <button class="btn btn-next" onclick="goTo(4)">التالي: الجوائز والمراكز ←</button>
+  </div>
+</div>
+
+<!-- PAGE 4: Awards & Finals -->
+<div id="page4" style="display:none">
+  <div class="card">
+    <div class="card-title"><span class="icon">🥇</span> الجوائز الفردية</div>
+    <div class="card-desc">أدخل اسم اللاعب الذي تتوقعه لكل جائزة</div>
+    <div class="grid-2">
+      <div class="form-row"><label>أفضل حارس</label><input type="text" id="aw1" placeholder="اسم اللاعب"></div>
+      <div class="form-row"><label>أفضل لاعب</label><input type="text" id="aw2" placeholder="اسم اللاعب"></div>
+      <div class="form-row"><label>أفضل لاعب شاب</label><input type="text" id="aw3" placeholder="اسم اللاعب"></div>
+      <div class="form-row"><label>هداف البطولة</label><input type="text" id="aw4" placeholder="اسم اللاعب"></div>
+      <div class="form-row"><label>أكثر صانع أهداف</label><input type="text" id="aw5" placeholder="اسم اللاعب"></div>
+      <div class="form-row"><label>أكثر مساهمة بالأهداف</label><input type="text" id="aw6" placeholder="اسم اللاعب"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🏅</span> المراكز النهائية</div>
+    <div class="card-desc">اختر المنتخب الذي تتوقعه لكل مركز</div>
+    <div class="grid-2">
+      <div class="form-row"><label>🥇 البطل</label><select id="f1"><option value="">-- اختر --</option></select></div>
+      <div class="form-row"><label>🥈 الوصيف</label><select id="f2"><option value="">-- اختر --</option></select></div>
+      <div class="form-row"><label>🥉 المركز الثالث</label><select id="f3"><option value="">-- اختر --</option></select></div>
+      <div class="form-row"><label>4️⃣ المركز الرابع</label><select id="f4"><option value="">-- اختر --</option></select></div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn btn-back" onclick="goTo(3)">← رجوع</button>
+    <button class="btn btn-submit" onclick="submitAll()">✅ تأكيد وحفظ التوقعات</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="page5" style="display:none">
+  <div class="card">
+    <div class="success">
+      <div style="font-size:56px;margin-bottom:12px">🎉</div>
+      <h2>تم تسجيل التوقعات!</h2>
+      <p id="success-msg">تم حفظ توقعات المشارك بنجاح</p>
+      <p class="hint">تم حفظ التوقعات تلقائياً في Google Sheets ✓</p>
+      <div class="copy-area" id="copy-area" style="display:none"></div>
+      <div>
+        <button class="copy-btn" style="display:none" onclick="copyAll()">📋 نسخ كل البيانات</button>
+        <button class="new-btn" onclick="resetAll()">➕ مشارك جديد</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const MATCHES = [{"num":1,"team1":"المكسيك","team2":"جنوب أفريقيا","group":"A","info":"11 يونيو - مكسيكو سيتي"},{"num":2,"team1":"كوريا الجنوبية","team2":"التشيك","group":"A","info":"12 يونيو - زابوبان"},{"num":3,"team1":"كندا","team2":"البوسنة والهرسك","group":"B","info":"12 يونيو - تورونتو"},{"num":4,"team1":"أمريكا","team2":"باراغواي","group":"D","info":"13 يونيو - لوس أنجلوس"},{"num":5,"team1":"قطر","team2":"سويسرا","group":"B","info":"13 يونيو - سانتا كلارا"},{"num":6,"team1":"البرازيل","team2":"المغرب","group":"C","info":"13 يونيو - نيويورك"},{"num":7,"team1":"هايتي","team2":"اسكتلندا","group":"C","info":"14 يونيو - فوكسبره"},{"num":8,"team1":"أستراليا","team2":"تركيا","group":"D","info":"14 يونيو - فانكوفر"},{"num":9,"team1":"ألمانيا","team2":"كوراساو","group":"E","info":"14 يونيو - هيوستن"},{"num":10,"team1":"هولندا","team2":"اليابان","group":"F","info":"14 يونيو - أرلينغتون"},{"num":11,"team1":"ساحل العاج","team2":"الإكوادور","group":"E","info":"15 يونيو - فيلادلفيا"},{"num":12,"team1":"السويد","team2":"تونس","group":"F","info":"15 يونيو - غوادالاخارا"},{"num":13,"team1":"إسبانيا","team2":"الرأس الأخضر","group":"H","info":"15 يونيو - أتلانتا"},{"num":14,"team1":"بلجيكا","team2":"مصر","group":"G","info":"15 يونيو - سياتل"},{"num":15,"team1":"السعودية","team2":"أوروغواي","group":"H","info":"15 يونيو - ميامي"},{"num":16,"team1":"إيران","team2":"نيوزيلندا","group":"G","info":"16 يونيو - لوس أنجلوس"},{"num":17,"team1":"فرنسا","team2":"السنغال","group":"I","info":"16 يونيو - نيويورك"},{"num":18,"team1":"العراق","team2":"النرويج","group":"I","info":"16 يونيو - فوكسبره"},{"num":19,"team1":"الأرجنتين","team2":"الجزائر","group":"J","info":"17 يونيو - كانساس سيتي"},{"num":20,"team1":"النمسا","team2":"الأردن","group":"J","info":"17 يونيو - سانتا كلارا"},{"num":21,"team1":"البرتغال","team2":"الكونغو الديمقراطية","group":"K","info":"17 يونيو - هيوستن"},{"num":22,"team1":"إنجلترا","team2":"كرواتيا","group":"L","info":"17 يونيو - أرلينغتون"},{"num":23,"team1":"غانا","team2":"بنما","group":"L","info":"18 يونيو - تورونتو"},{"num":24,"team1":"أوزبكستان","team2":"كولومبيا","group":"K","info":"18 يونيو - مكسيكو سيتي"},{"num":25,"team1":"التشيك","team2":"جنوب أفريقيا","group":"A","info":"18 يونيو - أتلانتا"},{"num":26,"team1":"سويسرا","team2":"البوسنة والهرسك","group":"B","info":"18 يونيو - لوس أنجلوس"},{"num":27,"team1":"كندا","team2":"قطر","group":"B","info":"18 يونيو - فانكوفر"},{"num":28,"team1":"المكسيك","team2":"كوريا الجنوبية","group":"A","info":"19 يونيو - زابوبان"},{"num":29,"team1":"أمريكا","team2":"أستراليا","group":"D","info":"19 يونيو - سياتل"},{"num":30,"team1":"اسكتلندا","team2":"المغرب","group":"C","info":"19 يونيو - فوكسبره"},{"num":31,"team1":"البرازيل","team2":"هايتي","group":"C","info":"20 يونيو - فيلادلفيا"},{"num":32,"team1":"تركيا","team2":"باراغواي","group":"D","info":"20 يونيو - سانتا كلارا"},{"num":33,"team1":"هولندا","team2":"السويد","group":"F","info":"20 يونيو - هيوستن"},{"num":34,"team1":"ألمانيا","team2":"ساحل العاج","group":"E","info":"20 يونيو - تورونتو"},{"num":35,"team1":"الإكوادور","team2":"كوراساو","group":"E","info":"21 يونيو - كانساس سيتي"},{"num":36,"team1":"تونس","team2":"اليابان","group":"F","info":"21 يونيو - غوادالاخارا"},{"num":37,"team1":"إسبانيا","team2":"السعودية","group":"H","info":"21 يونيو - أتلانتا"},{"num":38,"team1":"بلجيكا","team2":"إيران","group":"G","info":"21 يونيو - لوس أنجلوس"},{"num":39,"team1":"أوروغواي","team2":"الرأس الأخضر","group":"H","info":"21 يونيو - ميامي"},{"num":40,"team1":"نيوزيلندا","team2":"مصر","group":"G","info":"22 يونيو - فانكوفر"},{"num":41,"team1":"الأرجنتين","team2":"النمسا","group":"J","info":"22 يونيو - أرلينغتون"},{"num":42,"team1":"فرنسا","team2":"العراق","group":"I","info":"22 يونيو - فيلادلفيا"},{"num":43,"team1":"النرويج","team2":"السنغال","group":"I","info":"23 يونيو - تورونتو"},{"num":44,"team1":"الأردن","team2":"الجزائر","group":"J","info":"23 يونيو - سانتا كلارا"},{"num":45,"team1":"البرتغال","team2":"أوزبكستان","group":"K","info":"23 يونيو - هيوستن"},{"num":46,"team1":"إنجلترا","team2":"غانا","group":"L","info":"23 يونيو - فوكسبره"},{"num":47,"team1":"بنما","team2":"كرواتيا","group":"L","info":"24 يونيو - فوكسبره"},{"num":48,"team1":"كولومبيا","team2":"الكونغو الديمقراطية","group":"K","info":"24 يونيو - زابوبان"},{"num":49,"team1":"سويسرا","team2":"كندا","group":"B","info":"24 يونيو - فانكوفر"},{"num":50,"team1":"البوسنة والهرسك","team2":"قطر","group":"B","info":"24 يونيو - سياتل"},{"num":51,"team1":"المغرب","team2":"هايتي","group":"C","info":"24 يونيو - أتلانتا"},{"num":52,"team1":"اسكتلندا","team2":"البرازيل","group":"C","info":"24 يونيو - ميامي"},{"num":53,"team1":"جنوب أفريقيا","team2":"كوريا الجنوبية","group":"A","info":"25 يونيو - غوادالاخارا"},{"num":54,"team1":"التشيك","team2":"المكسيك","group":"A","info":"25 يونيو - مكسيكو سيتي"},{"num":55,"team1":"كوراساو","team2":"ساحل العاج","group":"E","info":"25 يونيو - فيلادلفيا"},{"num":56,"team1":"الإكوادور","team2":"ألمانيا","group":"E","info":"25 يونيو - نيويورك"},{"num":57,"team1":"تونس","team2":"هولندا","group":"F","info":"26 يونيو - كانساس سيتي"},{"num":58,"team1":"اليابان","team2":"السويد","group":"F","info":"26 يونيو - أرلينغتون"},{"num":59,"team1":"تركيا","team2":"أمريكا","group":"D","info":"26 يونيو - لوس أنجلوس"},{"num":60,"team1":"باراغواي","team2":"أستراليا","group":"D","info":"26 يونيو - سانتا كلارا"},{"num":61,"team1":"النرويج","team2":"فرنسا","group":"I","info":"26 يونيو - فوكسبره"},{"num":62,"team1":"السنغال","team2":"العراق","group":"I","info":"26 يونيو - تورونتو"},{"num":63,"team1":"الرأس الأخضر","team2":"السعودية","group":"H","info":"27 يونيو - هيوستن"},{"num":64,"team1":"أوروغواي","team2":"إسبانيا","group":"H","info":"27 يونيو - زابوبان"},{"num":65,"team1":"نيوزيلندا","team2":"بلجيكا","group":"G","info":"27 يونيو - فانكوفر"},{"num":66,"team1":"مصر","team2":"إيران","group":"G","info":"27 يونيو - سياتل"},{"num":67,"team1":"بنما","team2":"إنجلترا","group":"L","info":"27 يونيو - نيويورك"},{"num":68,"team1":"كرواتيا","team2":"غانا","group":"L","info":"27 يونيو - فيلادلفيا"},{"num":69,"team1":"كولومبيا","team2":"البرتغال","group":"K","info":"28 يونيو - ميامي"},{"num":70,"team1":"الكونغو الديمقراطية","team2":"أوزبكستان","group":"K","info":"28 يونيو - أتلانتا"},{"num":71,"team1":"الجزائر","team2":"النمسا","group":"J","info":"28 يونيو - كانساس سيتي"},{"num":72,"team1":"الأردن","team2":"الأرجنتين","group":"J","info":"28 يونيو - أرلينغتون"}];
+
+const TEAMS = ["أستراليا","ألمانيا","أمريكا","أوروغواي","أوزبكستان","إسبانيا","إنجلترا","إيران","اسكتلندا","الأرجنتين","الأردن","الإكوادور","البرازيل","البرتغال","البوسنة والهرسك","التشيك","الجزائر","الرأس الأخضر","السعودية","السنغال","السويد","العراق","الكونغو الديمقراطية","المغرب","المكسيك","النرويج","النمسا","اليابان","باراغواي","بلجيكا","بنما","تركيا","تونس","جنوب أفريقيا","ساحل العاج","سويسرا","غانا","فرنسا","قطر","كرواتيا","كندا","كوراساو","كوريا الجنوبية","كولومبيا","مصر","نيوزيلندا","هايتي","هولندا"];
+
+const selected = new Set();
+let currentPage = 1;
+
+function goTo(page) {
+  if (page === 2) {
+    const name = document.getElementById('name').value.trim();
+    if (!name) { alert('الرجاء إدخال اسمك أولاً'); return; }
+  }
+  if (page === 3 && selected.size !== 32) {
+    alert('الرجاء اختيار بالضبط 32 منتخباً (حالياً: ' + selected.size + ')'); return;
+  }
+  document.getElementById('page'+currentPage).style.display = 'none';
+  currentPage = page;
+  document.getElementById('page'+page).style.display = 'block';
+  updateSteps();
+  window.scrollTo(0,0);
+}
+
+function updateSteps() {
+  for (let i=1; i<=4; i++) {
+    const el = document.getElementById('st'+i);
+    el.className = 'step' + (i < currentPage ? ' done' : i === currentPage ? ' active' : '');
+  }
+  document.getElementById('progress').style.width = ((currentPage-1)/3*100) + '%';
+}
+
+// Build teams grid
+const grid = document.getElementById('teams-grid');
+TEAMS.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'team-btn';
+  btn.textContent = t;
+  btn.onclick = () => {
+    if (selected.has(t)) { selected.delete(t); btn.classList.remove('sel'); }
+    else { if (selected.size >= 32) return; selected.add(t); btn.classList.add('sel'); }
+    updateCounter();
+  };
+  grid.appendChild(btn);
+});
+
+function updateCounter() {
+  const n = selected.size, c = document.getElementById('teams-counter');
+  c.textContent = n + ' / 32 محدد';
+  c.className = 'teams-counter' + (n === 32 ? '' : n > 28 ? ' warning' : '');
+}
+
+// Build matches by group
+const mc = document.getElementById('matches-container');
+const groups = {};
+MATCHES.forEach(m => { if (!groups[m.group]) groups[m.group] = []; groups[m.group].push(m); });
+Object.keys(groups).sort().forEach(g => {
+  const gt = document.createElement('div');
+  gt.className = 'group-title';
+  gt.textContent = 'المجموعة ' + g;
+  mc.appendChild(gt);
+  groups[g].forEach(m => {
+    const d = document.createElement('div');
+    d.className = 'match-card';
+    d.innerHTML = `
+      <div class="match-header">
+        <span class="match-num">مباراة #${m.num}</span>
+        <span class="match-date">${m.info}</span>
+      </div>
+      <div class="match-teams">
+        <div class="match-team">${m.team1}</div>
+        <div class="match-vs">VS</div>
+        <div class="match-team">${m.team2}</div>
+      </div>
+      <div class="match-inputs">
+        <input type="number" id="g1_${m.num}" min="0" max="20" placeholder="أهداف ${m.team1}" title="أهداف ${m.team1}">
+        <div style="display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#ccc">-</div>
+        <input type="number" id="g2_${m.num}" min="0" max="20" placeholder="أهداف ${m.team2}" title="أهداف ${m.team2}">
+      </div>
+      <div class="match-winner">
+        <select id="w_${m.num}">
+          <option value="">-- الفائز المتوقع --</option>
+          <option value="${m.team1}">${m.team1}</option>
+          <option value="${m.team2}">${m.team2}</option>
+          <option value="تعادل">تعادل</option>
+        </select>
+      </div>
+      <div class="match-player">
+        <input type="text" id="p_${m.num}" placeholder="أفضل لاعب في المباراة (اختياري)">
+      </div>`;
+    mc.appendChild(d);
+  });
+});
+
+// Build finals selects
+['f1','f2','f3','f4'].forEach(id => {
+  const sel = document.getElementById(id);
+  TEAMS.forEach(t => { const o = document.createElement('option'); o.value=t; o.textContent=t; sel.appendChild(o); });
+});
+
+function submitAll() {
+  const name = document.getElementById('name').value.trim();
+  const awards = ['aw1','aw2','aw3','aw4','aw5','aw6'].map(id => document.getElementById(id).value.trim());
+  const finals = ['f1','f2','f3','f4'].map(id => document.getElementById(id).value);
+  if (awards.some(a=>!a)) { alert('الرجاء إدخال جميع الجوائز الفردية'); return; }
+  if (finals.some(f=>!f)) { alert('الرجاء اختيار جميع المراكز النهائية'); return; }
+
+  const teamsList = Array.from(selected);
+
+  // Collect matches data
+  const matchesData = MATCHES.map(m => ({
+    num: m.num, team1: m.team1, team2: m.team2,
+    g1: document.getElementById('g1_'+m.num).value || '',
+    g2: document.getElementById('g2_'+m.num).value || '',
+    winner: document.getElementById('w_'+m.num).value || '',
+    player: document.getElementById('p_'+m.num).value || ''
+  }));
+
+  const payload = {
+    name,
+    teams: teamsList.join(', '),
+    aw1: awards[0], aw2: awards[1], aw3: awards[2],
+    aw4: awards[3], aw5: awards[4], aw6: awards[5],
+    f1: finals[0], f2: finals[1], f3: finals[2], f4: finals[3],
+    matches: JSON.stringify(matchesData),
+    timestamp: new Date().toISOString()
+  };
+
+  // Show loading state
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '⏳ جاري الحفظ...';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbzZ7jVAjYpyzteiNxR_ZyMAppbyi5M2h1xX38nS-TILYL8QZg3Dv-yHRcrRlSJW1UK5VA/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    document.getElementById('success-msg').textContent = 'تم حفظ توقعات ' + name + ' في Google Sheets ✓';
+    document.getElementById('copy-area').style.display = 'none';
+    document.querySelector('.copy-btn').style.display = 'none';
+    document.getElementById('page4').style.display = 'none';
+    document.getElementById('page5').style.display = 'block';
+    document.getElementById('progress').style.width = '100%';
+    ['st1','st2','st3','st4'].forEach(id => document.getElementById(id).className = 'step done');
+    window.scrollTo(0,0);
+  })
+  .catch(() => {
+    alert('حدث خطأ في الاتصال. تأكد من الإنترنت وحاول مجدداً.');
+    btn.textContent = '✅ تأكيد وحفظ التوقعات';
+    btn.disabled = false;
+  });
+}
+
+function copyAll() {
+  if (window._exportData) {
+    navigator.clipboard.writeText(window._exportData)
+      .then(() => alert('تم النسخ! الصق البيانات في Excel'))
+      .catch(() => { document.getElementById('copy-area').select(); document.execCommand('copy'); alert('تم النسخ!'); });
+  }
+}
+
+function resetAll() {
+  document.getElementById('name').value = '';
+  selected.clear();
+  document.querySelectorAll('.team-btn').forEach(b => b.classList.remove('sel'));
+  updateCounter();
+  ['aw1','aw2','aw3','aw4','aw5','aw6'].forEach(id => document.getElementById(id).value='');
+  ['f1','f2','f3','f4'].forEach(id => document.getElementById(id).value='');
+  MATCHES.forEach(m => {
+    ['g1_','g2_','p_'].forEach(p => { const el=document.getElementById(p+m.num); if(el) el.value=''; });
+    const w=document.getElementById('w_'+m.num); if(w) w.value='';
+  });
+  document.getElementById('page5').style.display='none';
+  currentPage=1;
+  document.getElementById('page1').style.display='block';
+  updateSteps();
+  document.getElementById('progress').style.width='0%';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
